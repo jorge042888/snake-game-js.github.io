@@ -9,19 +9,27 @@ Juego de la serpiente en JavaScript (Canvas), con obstáculos dinámicos, estad�
 
 ## Controles
 
+En escritorio:
+
 | Tecla | Acción |
 |-------|--------|
 | **Flechas** o **W A S D** | Mover la serpiente |
 | **Espacio** | Pausar / reanudar |
 | **Esc** | Reiniciar (durante partida) |
 
+En móvil:
+
+- **Botones táctiles** (flechas virtuales debajo del tablero) para mover la serpiente.
+
 ## Funcionalidades
 
 - **Nombre de usuario**: al iniciar partida se solicita el nombre; se muestra en el header y en la pantalla de Game Over. Por defecto: "Jugador".
-- **Obstáculos**: cada vez que la serpiente come un círculo (comida), aparece un muro aleatorio de 1×1 celda. Chocar con un muro termina la partida.
+- **Obstáculos**: cada vez que la serpiente come un círculo (comida), aparece un muro aleatorio de 1×1 celda en color brillante (**#EB8DFC** y matices). Chocar con un muro termina la partida.
 - **Serpiente**: color base **#38CDEB** (cyan) con gradientes de contraste.
 - **Estadísticas**: botón "Estadísticas" en el header. Muestra partidas jugadas, mejor puntuación, puntuación media, total de puntos, y dos gráficas (puntuación y duración por partida) con **números en las barras** y **línea de tendencia**.
 - **Persistencia**: récord y historial de partidas (últimas 100) en `localStorage`; cada partida guarda puntuación, nombre, fecha y duración.
+- **Mejor jugador**: en la pantalla de inicio se muestra automáticamente el nombre del jugador con mayor puntuación registrada y se pre-rellena el campo de nombre con ese valor.
+- **Ventana de reglas**: botón "Reglas del juego" en el pie de página que abre una ventana con las reglas básicas, incluyendo el comportamiento de los bloques aleatorios.
 
 ## Estructura del proyecto
 

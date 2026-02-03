@@ -20,7 +20,7 @@ Todos los cambios notables del proyecto se documentan en este archivo.
 - Al recoger cada comida (círculo), se genera **un obstáculo** de **1×1 celda** en una posición aleatoria del grid.
 - Los obstáculos no se superponen con la serpiente, la comida ni otros obstáculos.
 - Si la serpiente choca con un obstáculo, la partida termina (Game Over).
-- Los obstáculos se dibujan como cuadrados grises con borde; se reinician al iniciar una nueva partida.
+- Los obstáculos se dibujan ahora en tonos brillantes basados en **#EB8DFC** con resplandor para que resalten mejor sobre el tablero; se reinician al iniciar una nueva partida.
 
 ### 4. Nombre de usuario al iniciar partida
 
@@ -35,6 +35,16 @@ Todos los cambios notables del proyecto se documentan en este archivo.
   - Base: **#38CDEB**
   - Oscuro: **#2ab8d4**
 - La cuadrícula del canvas y los efectos al recoger comida (anillos, partículas, flash) usan tonos cyan coherentes (**rgba(56, 205, 235, …)**) en lugar del verde anterior.
+
+### 6. Mejor jugador y reglas
+
+- Cálculo del **mejor jugador** a partir del historial (`snake-game-stats`), mostrando su nombre en la pantalla de inicio y usando ese nombre como valor por defecto en el campo de entrada.
+- Añadida una **ventana de reglas** accesible desde el pie de página, que explica controles, objetivo, comportamiento de los bloques y teclas de pausa/reinicio.
+
+### 7. Controles táctiles en móvil
+
+- Incorporados **controles táctiles** (flechas virtuales) bajo el tablero para facilitar el juego en dispositivos móviles.
+- Los controles solo se muestran en pantallas pequeñas mediante media queries, manteniendo la experiencia original en escritorio.
 
 ---
 

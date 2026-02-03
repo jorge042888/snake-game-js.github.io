@@ -44,6 +44,14 @@
   const playerNameInput = document.getElementById('player-name');
   const playerBadge = document.getElementById('player-badge');
   const gameOverPlayerEl = document.getElementById('game-over-player');
+  const bestPlayerNameEl = document.getElementById('best-player-name');
+  const controlUpBtn = document.getElementById('control-up');
+  const controlDownBtn = document.getElementById('control-down');
+  const controlLeftBtn = document.getElementById('control-left');
+  const controlRightBtn = document.getElementById('control-right');
+  const rulesOverlay = document.getElementById('rules-overlay');
+  const rulesBtn = document.getElementById('rules-btn');
+  const rulesClose = document.getElementById('rules-close');
 
   let playerName = '';
   let snake = [];
@@ -183,11 +191,27 @@
     obstacles.forEach((obs) => {
       const x = obs.x * CELL_SIZE;
       const y = obs.y * CELL_SIZE;
-      ctx.fillStyle = 'rgba(139, 148, 158, 0.5)';
-      ctx.strokeStyle = 'rgba(139, 148, 158, 0.8)';
+      const inset = 2;
+      const w = CELL_SIZE - inset * 2;
+      const h = CELL_SIZE - inset * 2;
+
+      // Bloque brillante en tonos #EB8DFC
+      const grad = ctx.createLinearGradient(x, y, x + CELL_SIZE, y + CELL_SIZE);
+      grad.addColorStop(0, '#EB8DFC');
+      grad.addColorStop(0.5, '#f4b4ff');
+      grad.addColorStop(1, '#c05ae3');
+
+      ctx.fillStyle = grad;
+      ctx.shadowColor = 'rgba(235, 141, 252, 0.7)';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.rect(x + inset, y + inset, w, h);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.strokeStyle = 'rgba(235, 141, 252, 0.9)';
       ctx.lineWidth = 1;
-      ctx.fillRect(x + 1, y + 1, CELL_SIZE - 2, CELL_SIZE - 2);
-      ctx.strokeRect(x + 1, y + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+      ctx.strokeRect(x + inset + 0.5, y + inset + 0.5, w - 1, h - 1);
     });
   }
 
@@ -358,10 +382,37 @@
     gameLoopId = requestAnimationFrame(runLoop);
   }
 
+  function updateBestPlayerFromStats() {
+    if (!bestPlayerNameEl) return;
+    let stats = [];
+    try {
+      const raw = localStorage.getItem(GAME_STATS_KEY);
+      if (raw) stats = JSON.parse(raw);
+    } catch (_) {
+      stats = [];
+    }
+    if (!stats.length) {
+      bestPlayerNameEl.textContent = 'Aún sin registros';
+      return;
+    }
+    let best = stats[0];
+    for (let i = 1; i < stats.length; i++) {
+      if (stats[i].score > best.score) {
+        best = stats[i];
+      }
+    }
+    const name = (best.playerName || 'Jugador').toString().slice(0, 30);
+    bestPlayerNameEl.textContent = name;
+    if (playerNameInput && !playerNameInput.value) {
+      playerNameInput.value = name;
+    }
+  }
+
   function saveGameStats() {
     const durationSec = Math.round((performance.now() - gameStartTime) / 1000);
     const entry = {
       score,
+      playerName: playerName || 'Jugador',
       date: new Date().toISOString(),
       duration: durationSec,
     };
@@ -424,20 +475,86 @@
 
     if (KEY.UP.includes(e.code)) {
       e.preventDefault();
-      if (direction !== Direction.DOWN) nextDirection = Direction.UP;
+      changeDirection(Direction.UP);
     } else if (KEY.DOWN.includes(e.code)) {
       e.preventDefault();
-      if (direction !== Direction.UP) nextDirection = Direction.DOWN;
+      changeDirection(Direction.DOWN);
     } else if (KEY.LEFT.includes(e.code)) {
       e.preventDefault();
-      if (direction !== Direction.RIGHT) nextDirection = Direction.LEFT;
+      changeDirection(Direction.LEFT);
     } else if (KEY.RIGHT.includes(e.code)) {
       e.preventDefault();
-      if (direction !== Direction.LEFT) nextDirection = Direction.RIGHT;
+      changeDirection(Direction.RIGHT);
+    }
+  }
+
+  function changeDirection(newDir) {
+    if (!isRunning || isPaused) return;
+    if (newDir === Direction.UP && direction !== Direction.DOWN) {
+      nextDirection = Direction.UP;
+    } else if (newDir === Direction.DOWN && direction !== Direction.UP) {
+      nextDirection = Direction.DOWN;
+    } else if (newDir === Direction.LEFT && direction !== Direction.RIGHT) {
+      nextDirection = Direction.LEFT;
+    } else if (newDir === Direction.RIGHT && direction !== Direction.LEFT) {
+      nextDirection = Direction.RIGHT;
     }
   }
 
   startBtn.addEventListener('click', startGame);
   restartBtn.addEventListener('click', restart);
   document.addEventListener('keydown', handleKeydown);
+
+  if (controlUpBtn) {
+    controlUpBtn.addEventListener('click', function () {
+      changeDirection(Direction.UP);
+    });
+  }
+  if (controlDownBtn) {
+    controlDownBtn.addEventListener('click', function () {
+      changeDirection(Direction.DOWN);
+    });
+  }
+  if (controlLeftBtn) {
+    controlLeftBtn.addEventListener('click', function () {
+      changeDirection(Direction.LEFT);
+    });
+  }
+  if (controlRightBtn) {
+    controlRightBtn.addEventListener('click', function () {
+      changeDirection(Direction.RIGHT);
+    });
+  }
+
+  function openRules() {
+    if (!rulesOverlay) return;
+    rulesOverlay.classList.add('visible');
+    rulesOverlay.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeRules() {
+    if (!rulesOverlay) return;
+    rulesOverlay.classList.remove('visible');
+    rulesOverlay.setAttribute('aria-hidden', 'true');
+  }
+
+  if (rulesBtn) {
+    rulesBtn.addEventListener('click', openRules);
+  }
+  if (rulesClose) {
+    rulesClose.addEventListener('click', closeRules);
+  }
+  if (rulesOverlay) {
+    rulesOverlay.addEventListener('click', function (e) {
+      if (e.target === rulesOverlay) closeRules();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.code === 'Escape' && rulesOverlay && rulesOverlay.classList.contains('visible')) {
+      closeRules();
+    }
+  });
+
+  updateBestPlayerFromStats();
 })();

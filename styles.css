@@ -207,6 +207,12 @@ body {
   line-height: 1.5;
 }
 
+.best-player-line {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
 .player-name-label {
   display: block;
   font-size: 0.85rem;
@@ -258,6 +264,22 @@ body {
   font-size: 0.95rem;
   color: var(--text-muted);
   margin-bottom: 0.5rem !important;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font);
+  font-size: 0.8rem;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.btn-link:hover {
+  color: #7bed9f;
 }
 
 .overlay-content.small p {
@@ -510,6 +532,25 @@ body {
   display: none;
 }
 
+.rules-panel {
+  max-width: 420px;
+}
+
+.rules-body {
+  font-size: 0.9rem;
+}
+
+.rules-list {
+  list-style: disc;
+  padding-left: 1.25rem;
+  text-align: left;
+  color: var(--text-muted);
+}
+
+.rules-list li + li {
+  margin-top: 0.5rem;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 560px) {
   .game-wrapper {
@@ -549,5 +590,52 @@ body {
 
   .chart-wrap canvas {
     max-width: 100%;
+  }
+}
+
+/* ===== Controles táctiles (móvil) ===== */
+.touch-controls {
+  display: none;
+  margin-top: 0.75rem;
+}
+
+.touch-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.touch-row-middle {
+  margin: 0.35rem 0;
+}
+
+.btn-touch {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: radial-gradient(circle at 30% 30%, #38CDEB, #0d1219);
+  color: var(--bg-deep);
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(56, 205, 235, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.btn-touch:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: 0 2px 8px rgba(56, 205, 235, 0.25);
+  filter: brightness(0.9);
+}
+
+@media (max-width: 720px) {
+  .touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }

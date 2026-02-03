@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="noise"></div>
@@ -41,7 +41,10 @@
           <h2>¿Listo para jugar?</h2>
           <label for="player-name" class="player-name-label">Tu nombre</label>
           <input type="text" id="player-name" class="player-name-input" placeholder="Escribe tu nombre" maxlength="30" autocomplete="off">
-          <p class="start-hint">Usa las flechas o <kbd>W A S D</kbd> para mover la serpiente.</p>
+          <p class="best-player-line" id="best-player-line">
+            Mejor jugador: <span id="best-player-name">Aún sin registros</span>
+          </p>
+          <p class="start-hint">Usa las flechas o <kbd>W A S D</kbd> o los controles táctiles para mover la serpiente.</p>
           <button id="start-btn" class="btn btn-primary">Iniciar partida</button>
         </div>
       </div>
@@ -60,6 +63,19 @@
           <h2>Pausado</h2>
           <p><kbd>Espacio</kbd> para continuar</p>
         </div>
+      </div>
+    </div>
+
+    <div class="touch-controls" aria-hidden="true">
+      <div class="touch-row">
+        <button id="control-up" class="btn-touch" type="button" aria-label="Mover arriba">▲</button>
+      </div>
+      <div class="touch-row touch-row-middle">
+        <button id="control-left" class="btn-touch" type="button" aria-label="Mover izquierda">◀</button>
+        <button id="control-right" class="btn-touch" type="button" aria-label="Mover derecha">▶</button>
+      </div>
+      <div class="touch-row">
+        <button id="control-down" class="btn-touch" type="button" aria-label="Mover abajo">▼</button>
       </div>
     </div>
 
@@ -110,14 +126,33 @@
       </div>
     </div>
 
+    <div id="rules-overlay" class="stats-overlay" aria-hidden="true">
+      <div class="stats-panel rules-panel">
+        <div class="stats-header">
+          <h2 class="stats-title">Reglas del juego</h2>
+          <button id="rules-close" class="btn-close" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="stats-body rules-body">
+          <ul class="rules-list">
+            <li>Mueve la serpiente con las flechas del teclado, <kbd>W A S D</kbd> o los controles táctiles en móvil.</li>
+            <li>Come los círculos rojos para sumar puntos y alargar la serpiente.</li>
+            <li>Evita chocar contra tu propio cuerpo.</li>
+            <li>Cada vez que comes aparece un bloque de color brillante en el tablero: si chocas contra uno, pierdes la partida.</li>
+            <li>Pulsa <kbd>Espacio</kbd> para pausar/reanudar y <kbd>Esc</kbd> para reiniciar la partida actual.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <footer class="game-footer">
       <span><kbd>Espacio</kbd> Pausar</span>
       <span class="separator">·</span>
       <span><kbd>Esc</kbd> Reiniciar</span>
+      <span class="separator">·</span>
+      <button id="rules-btn" class="btn-link" type="button">Reglas del juego</button>
     </footer>
   </main>
-  <script src="game.js"></script>
-  <script src="stats.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/stats.js"></script>
 </body>
 </html>
-
