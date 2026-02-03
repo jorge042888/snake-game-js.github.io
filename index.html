@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake — Juego clásico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <main class="game-wrapper">
+    <header class="game-header">
+      <h1 class="logo">Snake</h1>
+      <div class="player-badge" id="player-badge" aria-hidden="true"></div>
+      <div class="header-right">
+        <button id="stats-btn" class="btn btn-ghost" type="button" aria-label="Estadísticas">
+          <span class="stats-icon" aria-hidden="true">📊</span>
+          Estadísticas
+        </button>
+        <div class="scores">
+          <div class="score-item">
+            <span class="score-label">Puntos</span>
+            <span id="score" class="score-value">0</span>
+          </div>
+          <div class="score-item best">
+            <span class="score-label">Récord</span>
+            <span id="high-score" class="score-value">0</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="canvas-container">
+      <canvas id="game-canvas" width="520" height="520"></canvas>
+
+      <div id="start-screen" class="overlay overlay-visible">
+        <div class="overlay-content">
+          <h2>¿Listo para jugar?</h2>
+          <label for="player-name" class="player-name-label">Tu nombre</label>
+          <input type="text" id="player-name" class="player-name-input" placeholder="Escribe tu nombre" maxlength="30" autocomplete="off">
+          <p class="start-hint">Usa las flechas o <kbd>W A S D</kbd> para mover la serpiente.</p>
+          <button id="start-btn" class="btn btn-primary">Iniciar partida</button>
+        </div>
+      </div>
+
+      <div id="game-over-screen" class="overlay">
+        <div class="overlay-content">
+          <h2>Game Over</h2>
+          <p class="player-result"><span id="game-over-player"></span></p>
+          <p class="final-score">Puntos: <span id="final-score">0</span></p>
+          <button id="restart-btn" class="btn btn-primary">Jugar de nuevo</button>
+        </div>
+      </div>
+
+      <div id="pause-overlay" class="overlay overlay-pause">
+        <div class="overlay-content small">
+          <h2>Pausado</h2>
+          <p><kbd>Espacio</kbd> para continuar</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="stats-overlay" class="stats-overlay" aria-hidden="true">
+      <div class="stats-panel">
+        <div class="stats-header">
+          <h2 class="stats-title">Estadísticas</h2>
+          <button id="stats-close" class="btn-close" type="button" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="stats-body">
+          <div class="stats-kpis">
+            <div class="kpi-card">
+              <span class="kpi-value" id="stat-total-games">0</span>
+              <span class="kpi-label">Partidas jugadas</span>
+            </div>
+            <div class="kpi-card accent">
+              <span class="kpi-value" id="stat-best-score">0</span>
+              <span class="kpi-label">Mejor puntuación</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value" id="stat-avg-score">0</span>
+              <span class="kpi-label">Puntuación media</span>
+            </div>
+            <div class="kpi-card">
+              <span class="kpi-value" id="stat-total-points">0</span>
+              <span class="kpi-label">Total puntos</span>
+            </div>
+          </div>
+          <div class="stats-charts hidden">
+            <div class="chart-block">
+              <h3 class="chart-title">Puntuación por partida (últimas 20)</h3>
+              <div class="chart-wrap">
+                <canvas id="chart-scores" width="480" height="200"></canvas>
+              </div>
+            </div>
+            <div class="chart-block">
+              <h3 class="chart-title">Duración por partida (min)</h3>
+              <div class="chart-wrap">
+                <canvas id="chart-duration" width="480" height="160"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="stats-empty" id="stats-empty">
+            <p>Aún no hay partidas registradas.</p>
+            <p class="stats-empty-hint">Juega una partida para ver tus estadísticas aquí.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="game-footer">
+      <span><kbd>Espacio</kbd> Pausar</span>
+      <span class="separator">·</span>
+      <span><kbd>Esc</kbd> Reiniciar</span>
+    </footer>
+  </main>
+  <script src="js/game.js"></script>
+  <script src="js/stats.js"></script>
+</body>
+</html>
