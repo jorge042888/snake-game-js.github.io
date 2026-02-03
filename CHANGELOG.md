@@ -43,8 +43,8 @@ Todos los cambios notables del proyecto se documentan en este archivo.
 
 ### 7. Controles táctiles en móvil
 
-- Incorporados **controles táctiles** (flechas virtuales) bajo el tablero para facilitar el juego en dispositivos móviles.
-- Los controles solo se muestran en pantallas pequeñas mediante media queries, manteniendo la experiencia original en escritorio.
+- Inicialmente se incorporaron **controles táctiles** (flechas virtuales) bajo el tablero para facilitar el juego en dispositivos móviles.
+- Posteriormente se reemplazaron por **gestos táctiles (swipe)** sobre el propio tablero, eliminando los botones físicos para una experiencia más cómoda en pantallas pequeñas.
 
 ---
 

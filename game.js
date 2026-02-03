@@ -45,10 +45,6 @@
   const playerBadge = document.getElementById('player-badge');
   const gameOverPlayerEl = document.getElementById('game-over-player');
   const bestPlayerNameEl = document.getElementById('best-player-name');
-  const controlUpBtn = document.getElementById('control-up');
-  const controlDownBtn = document.getElementById('control-down');
-  const controlLeftBtn = document.getElementById('control-left');
-  const controlRightBtn = document.getElementById('control-right');
   const rulesOverlay = document.getElementById('rules-overlay');
   const rulesBtn = document.getElementById('rules-btn');
   const rulesClose = document.getElementById('rules-close');
@@ -67,6 +63,12 @@
   let lastDrawTime = 0;
   let gameStartTime = 0;
   const TICK_MS = 120;
+
+  // Gestos táctiles (swipe) en el canvas
+  let touchStartX = null;
+  let touchStartY = null;
+  let touchLastX = null;
+  let touchLastY = null;
 
   /** Efecto luminoso al recoger comida: { x, y (px), startTime } */
   let collectEffects = [];
@@ -501,30 +503,62 @@
     }
   }
 
+  function handleTouchStart(e) {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+    touchLastX = touchStartX;
+    touchLastY = touchStartY;
+  }
+
+  function handleTouchMove(e) {
+    if (e.touches.length !== 1) return;
+    const t = e.touches[0];
+    touchLastX = t.clientX;
+    touchLastY = t.clientY;
+    // Evita scroll mientras se hace swipe sobre el canvas
+    e.preventDefault();
+  }
+
+  function handleTouchEnd() {
+    if (touchStartX == null || touchLastX == null) return;
+    const dx = touchLastX - touchStartX;
+    const dy = touchLastY - touchStartY;
+    const absX = Math.abs(dx);
+    const absY = Math.abs(dy);
+    const threshold = 24; // píxeles mínimos para considerar swipe
+
+    if (absX < threshold && absY < threshold) {
+      touchStartX = touchStartY = touchLastX = touchLastY = null;
+      return;
+    }
+
+    if (absX > absY) {
+      // Swipe horizontal
+      if (dx > 0) {
+        changeDirection(Direction.RIGHT);
+      } else {
+        changeDirection(Direction.LEFT);
+      }
+    } else {
+      // Swipe vertical
+      if (dy > 0) {
+        changeDirection(Direction.DOWN);
+      } else {
+        changeDirection(Direction.UP);
+      }
+    }
+
+    touchStartX = touchStartY = touchLastX = touchLastY = null;
+  }
+
   startBtn.addEventListener('click', startGame);
   restartBtn.addEventListener('click', restart);
   document.addEventListener('keydown', handleKeydown);
-
-  if (controlUpBtn) {
-    controlUpBtn.addEventListener('click', function () {
-      changeDirection(Direction.UP);
-    });
-  }
-  if (controlDownBtn) {
-    controlDownBtn.addEventListener('click', function () {
-      changeDirection(Direction.DOWN);
-    });
-  }
-  if (controlLeftBtn) {
-    controlLeftBtn.addEventListener('click', function () {
-      changeDirection(Direction.LEFT);
-    });
-  }
-  if (controlRightBtn) {
-    controlRightBtn.addEventListener('click', function () {
-      changeDirection(Direction.RIGHT);
-    });
-  }
+  canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+  canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
+  canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
 
   function openRules() {
     if (!rulesOverlay) return;

@@ -19,7 +19,7 @@ En escritorio:
 
 En móvil:
 
-- **Botones táctiles** (flechas virtuales debajo del tablero) para mover la serpiente.
+- **Gestos táctiles (swipe)** sobre el tablero para mover la serpiente en la dirección del deslizamiento.
 
 ## Funcionalidades
 
